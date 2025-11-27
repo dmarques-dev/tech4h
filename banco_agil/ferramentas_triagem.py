@@ -62,7 +62,7 @@ def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
                 if cpf_csv == cpf:
 
 
-                    # Normalizar data do CSV
+                    # Limpar a data do CSV
                     data_registrada = linha.get("data_nascimento", "")
                     data_registrada_num = ''.join(filter(str.isdigit, data_registrada))
 
@@ -82,7 +82,7 @@ def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
                                 "data_nascimento": data_registrada
                             }
                         else:
-                            return {
+                            return { #Somente para fins de debug, retirar variaveis em produção ###VERIFICAR PARA PRODUÇÃO###
                                 "status": "error",
                                 "mensagem": f"Falha de autenticação. CPF: {cpf} (enviado) vs {cpf_csv} (registrado), Data Nasc: {data_nascimento} (enviado) vs {data_registrada_num} (registrado)"
                             }
