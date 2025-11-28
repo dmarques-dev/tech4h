@@ -1,4 +1,5 @@
 
+
 def get_exchange_rate(from_currency: str, to_currency: str) -> float:
     """
     Acessa a API em frankfurter.app para obter a cotação de câmbio entre duas moedas.
@@ -30,21 +31,4 @@ def get_exchange_rate(from_currency: str, to_currency: str) -> float:
         raise ValueError(f"Não foi possível obter a taxa de câmbio para {from_currency} para {to_currency}.")
 
 
-from . import agente_cambio # Importa Agente de cambio definido no agente_cambio.py
-def rotear_para_agente_cambio(mensagem_cliente: str) -> str:
-    """
-    Encaminha a conversa do cliente para o Agente de Câmbio para 
-    obter informações sobre a cotação de câmbio.
-    
-    Args:
-        mensagem_cliente: A pergunta original do cliente sobre câmbio.
-        
-    Returns:
-        A resposta final gerada pelo Agente de Câmbio.
-    """
 
-    try:
-        response = agente_cambio.run(message=mensagem_cliente)
-        return f"O resultado da sua consulta de câmbio é: {response.text}"
-    except Exception as e:
-        return f"Erro ao rotear: {e}"

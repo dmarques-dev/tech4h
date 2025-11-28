@@ -2,26 +2,38 @@ import csv
 import os
 from dotenv import load_dotenv
 
-
+#Função para validar CPF
 def validar_cpf(cpf: str) -> bool:
-    """
-    Verifica se um CPF é válido. Usando apenas regras básicas de validação para demonstração.
-    Requer também que o CPF seja passado com pelo menos 11 digitos numéricos (em str).
-    """
-    # Remove caracteres não numéricos
     cpf = ''.join(filter(str.isdigit, cpf))
-    
-    # 1. Checa se tem 11 dígitos (Válido)
+
     if len(cpf) != 11:
         return False
-        
-    # 2. Lógica de cálculo básico de validade (multiplo de 11)
-    soma_digitos = sum(int(d) for d in cpf)
 
-    if soma_digitos % 11 != 0:
+    # Rejeita sequências repetidas ===> Para o exercício, vamos suprimir esta verificação para podermos usar CPFs de teste (Ex: 111.111.111-11)
+    #if cpf == cpf[0] * 11:
+    #    return False
+
+    # Primeiro dígito
+    soma = sum(int(d) * peso for d, peso in zip(cpf[:9], range(10, 1, -1)))
+    dv1 = (soma * 10) % 11
+    dv1 = 0 if dv1 == 10 else dv1
+
+    if dv1 != int(cpf[9]):
+    #    print(f"Erro ! CPF {cpf} Digito 1: {dv1}")
         return False
-    else:
-        return True 
+
+    # Segundo dígito
+    soma = sum(int(d) * peso for d, peso in zip(cpf[:10], range(11, 1, -1)))
+    dv2 = (soma * 10) % 11
+    dv2 = 0 if dv2 == 10 else dv2
+
+    if dv2 != int(cpf[10]):
+    #    print(f"Erro ! CPF {cpf} Digito 2: {dv2}")
+        return False
+
+    return True
+
+
     
 
 def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:

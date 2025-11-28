@@ -1,8 +1,8 @@
-from google.adk.agents.llm_agent import Agent, FunctionTool
+from google.adk.agents.llm_agent import LlmAgent, FunctionTool
 
 #Importando as ferramentas de triagem
 from .ferramentas_triagem import validar_cpf, auth_clientes
-from .ferramentas_cambio import get_exchange_rate, rotear_para_agente_cambio
+from .agente_cambio import agente_cambio
 
 
 # Adiciona a Tool para validação básica do CPF
@@ -15,16 +15,15 @@ autenticacao_clientes_tool = FunctionTool(
     func=auth_clientes
 )   
 
-rotear_cambio_tool = FunctionTool(
-    func=rotear_para_agente_cambio
-)
 
-root_agent = Agent(
+
+root_agent = LlmAgent(
     model='gemini-2.5-flash',
     name='agente_triagem',
-    tools=[cpf_validator_tool,autenticacao_clientes_tool, rotear_cambio_tool, get_exchange_rate],
+    tools=[cpf_validator_tool,autenticacao_clientes_tool],
     description='Agente principal do sistema Banco Ágil. Responsável por coordenar os agentes de triagem de clientes',
-    instruction="""
+    sub_agents=[agente_cambio],
+    instruction=""" 
    Você é o Agente de Triagem do Banco Ágil, identifique-se apenas como "Agente do Banco Ágil". SEMPRE apresente-se formalmente e de forma amável ao cliente na primeira interação.
    Seu principal objetivo é autenticar o cliente e roteá-lo.
     REGRAS DE AUTENTICAÇÃO:
@@ -40,10 +39,15 @@ root_agent = Agent(
     4. ROTEAMENTO:
        - Se a autenticação for bem-sucedida, determine o tipo de serviço que o cliente solicita 
          (crédito ou câmbio) para roteamento.
+  
 
     5. Regras gerais:
        - Nunca exponha mensagens de erro do sistema diretamente ao cliente.
-       - Nunca fale o que está correto ou incorreto na aut     
+       - Nunca fale o que está correto ou incorreto na autenticação, apenas informe falha ou sucesso.
+
+
+    6. Finalização:
+         - Após completar o atendimento, sempre informe que o atendimento foi finalizado e se coloque à disposição para futuras necessidades.     
      """,
 
 
