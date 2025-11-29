@@ -62,7 +62,7 @@ PROCESSO DA ENTREVISTA (siga rigorosamente esta ordem):
    )
 
 7. FINALIZAÇÃO:
-   - Após receber o resultado da ferramenta 'calcular_score', SEMPRE informe que a entrevista foi concluida e SEMPRE INFORME seu novo score, como por exemplo: "Entrevista concluída! Seu score de crédito é: [SCORE]"
+   - Logo depois de receber o resultado da ferramenta 'calcular_score', SEMPRE informe que a entrevista foi concluida e SEMPRE INFORME seu novo score, como por exemplo: "Entrevista concluída! Seu score de crédito é: [SCORE]"
    - Utilize a ferramenta 'atualizar_score_cliente' para atualizar o score do cliente no sistema, passando o CPF do cliente (disponível em tool_context.state["authenticated_cpf"]) e o novo score retornado pela ferramenta calcular_score.
    - Quando acabar, agradeça ao cliente pela participação e informe que ele pode solicitar um novo limite de crédito com base no novo score.
    - informe que ao agente_credito que a entrevista foi concluída e peça para perguntar se o cliente deseja solicitar um novo limite de crédito com base no novo score.
