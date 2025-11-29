@@ -77,7 +77,7 @@ def atualizar_score_cliente(cpf: str, novo_score: int, tool_context: ToolContext
     
     Args:
         cpf (str): CPF do cliente 
-        novo_score (float): O novo score a ser gravado.
+        novo_score (int): O novo score a ser gravado.
     
     Returns:
         dict: Resultado da operação com status e mensagem.
@@ -111,7 +111,7 @@ def atualizar_score_cliente(cpf: str, novo_score: int, tool_context: ToolContext
                 
                 if cpf_linha_limpo == cpf_limpo:
                     # Atualizar o score atual
-                    linha['score_atual'] = f"{novo_score:.2f}"
+                    linha['score_atual'] = str(int(novo_score))
                     cliente_encontrado = True
                 
                 linhas.append(linha)

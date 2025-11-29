@@ -51,8 +51,7 @@ def atualiza_credito_cliente(cpf: str, novo_limite: float) -> dict:
         if not cliente_encontrado:
             return {"status": "error", "mensagem": f"Cliente com CPF {cpf_formatado} não encontrado no arquivo."}
         
-        # TODO Atualizar a variável de crédito no contexto do agente
-        
+
         # Reescrever o arquivo com os dados atualizados
         with open(csv_clientes_path, mode='w', encoding='utf-8', newline='') as arquivo:
             escritor = csv.DictWriter(arquivo, fieldnames=fieldnames)
