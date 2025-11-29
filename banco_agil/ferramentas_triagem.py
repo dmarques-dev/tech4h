@@ -1,6 +1,9 @@
 import csv
 import os
 from dotenv import load_dotenv
+from google.adk.tools import ToolContext
+
+
 
 #Função para validar CPF
 def validar_cpf(cpf: str) -> bool:
@@ -36,7 +39,7 @@ def validar_cpf(cpf: str) -> bool:
 
     
 
-def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
+async def auth_clientes(cpf: str, data_nascimento: str = None, tool_context: ToolContext = None)  -> dict:
     """
     Verifica no CSV CSV_CLIENTES se existe o CPF e a data de nascimento, e se o par é válido.
     Caso não seja válido, informar falha de autenticação, e que só serão permitidos 3 tentativas.
@@ -78,6 +81,11 @@ def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
                     data_registrada = linha.get("data_nascimento", "")
                     data_registrada_num = ''.join(filter(str.isdigit, data_registrada))
 
+                    #Ler limite de crédito e score atual para gravar em context se necessário no futuro
+                    limite_credito = linha.get("limite_credito", "")
+                    score_atual = linha.get("score_atual", "")
+                
+
                     if not data_registrada_num:
                         return {
                             "status": "error",
@@ -87,6 +95,14 @@ def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
                     # Se usuário informou data, comparar
                     if data_nascimento:
                         if data_registrada_num == data_nascimento:
+                            # Grava os dados do cliente autenticado no contexto para outros agentes se necessário
+
+                            if tool_context:
+                                tool_context.state["user_cpf"] = cpf
+                                tool_context.state["user_limite_credito"] = limite_credito
+                                tool_context.state["user_score_atual"] = score_atual    
+
+
                             return {
                                 "status": "success",
                                 "mensagem": "CPF e data de nascimento conferem.",
@@ -94,9 +110,10 @@ def auth_clientes(cpf: str, data_nascimento: str = None) -> dict:
                                 "data_nascimento": data_registrada
                             }
                         else:
-                            return { #Somente para fins de debug, retirar variaveis em produção ###VERIFICAR PARA PRODUÇÃO###
+                            return { #Somente para fins de debug, retirar variaveis em produção 
                                 "status": "error",
-                                "mensagem": f"Falha de autenticação. CPF: {cpf} (enviado) vs {cpf_csv} (registrado), Data Nasc: {data_nascimento} (enviado) vs {data_registrada_num} (registrado)"
+                                #"mensagem": f"Falha de autenticação. CPF: {cpf} (enviado) vs {cpf_csv} (registrado), Data Nasc: {data_nascimento} (enviado) vs {data_registrada_num} (registrado)"
+                                "mensagem": "Falha de autenticação. CPF ou data de nascimento não conferem."                              
                             }
 
                     # Se não foi informado data, mas o CPF existe:

@@ -216,7 +216,8 @@ __marimo__/
 .Spotlight-V100
 .Trashes
 
-
+# Arquivos de log do sistema 
+banco_agil/dados/*.log
 
 
 

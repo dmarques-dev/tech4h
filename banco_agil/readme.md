@@ -59,7 +59,7 @@ Demais APIs utilizadas:
 
 # Funcionalidades implementadas
 1 - O Agente de triagem é o responsável pela primeira interação, ele é responsável por questionar o CPF e a data de nascimento do cliente do banco
-1.1 - Ele valida o CPF antes de buscar na "base de dados" para minimizar os recursos de sistema (BD). Neste ponto, para efeitos de teste, somente são validados o tamanho do numeral (11 numeros) e uma das fórmulas de validação 
+1.1 - Ele valida o CPF antes de buscar na "base de dados" para minimizar os recursos de sistema (BD). Neste ponto, para efeitos de teste, serão validados CPFs de acordo com as regras oficiais, EXCETO os dígitos contínuos para efeitos do exercício proposto. Esta parte do código está comentada para habilitação futura.
 
 
 
