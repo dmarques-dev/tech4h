@@ -6,7 +6,7 @@ O projeto chamado "Banco Ágil" visa demonstrar a construção de um agente de i
 - Agente de Triagem: Autentica o cliente e direciona para o agente apropriado.
 - Agente de Crédito: Informa sobre limites de crédito e processa solicitações de aumento de limite.
 - Agente de Entrevista de Crédito: Conduz uma entrevista financeira para atualizar o score de crédito.
-- Agente de Câmbio: Realiza consulta de cotação de moedas astravés de uma API pública.
+- Agente de Câmbio: Realiza consulta de cotação de moedas através de uma API pública.
 
 
 ## Estrutura do projeto
@@ -35,7 +35,7 @@ Escolhido por ser modular, utilizar a linguagem Python, compatível com diversos
 Escolhida por ser de natureza alto nível (acelerando o desenvolvimento), ser uma das com robusta presença no ADK e de maior suporte na comunidade. 
 
 ## Arquitetura
-A arquitetura desenvolvida contempla agentes Coordenados usando o ADK (Agent Development Kit) do Google, com um Agente de Triagem (Root Agent) que roteia a conversa para um Agente de Câmbio, um Agente de Crédito e um Agente de entrevistas. 
+A arquitetura desenvolvida contempla agentes Coordenados usando o ADK (Agent Development Kit) do Google, com um Agente de Triagem (Root Agent) que roteia a conversa para um Agente de Câmbio, um Agente de Crédito e um Agente de Entrevista de Crédito. 
 
 ![Arquitetura geral](public/arquitetura_agentes.png)
 
@@ -68,12 +68,12 @@ O agente de triagem é responsável por autenticar o usuário (auth_clientes) na
 O Agente de Câmbio é o responsável por buscar através de uma API aberta em frankfurter.app pelas informações de câmbio. Ele extrai do cliente, através de LLM, a cotação da moeda necessária. Depois de fazer a conversão usando a ferramenta exchange_rate e depois provê a informação. Uma vez que o cliente não precisa mais de nenhuma informação de câmbio, ele automaticamente roteia para o Agente de triagem novamente.
 
 ## 3 - Agente de crédito
-O agente de crédito é o responsável por informar o limite de crédito, criar a solicitação de um novo limite, Checar o Score do cliente e aprovar/reprovar novo limite, e redirecionar o cliente para o agente de entrevista de crédito
+O agente de crédito é o responsável por informar o limite de crédito, criar a solicitação de um novo limite, checar o Score do cliente, aprovar/reprovar novo limite e redirecionar o cliente para o agente de entrevista de crédito caso necessário.
 ### 3.1 Informar o limite de crédito 
 O Agente, quando solicitado, é capaz de verificar a informação de limites do cliente. Como o Agente de Triagem já acessou a base de dados para autenticar o cliente e colocou as informações em variáveis de contexto, basta usá-las para manter o cliente informado usando a ferramenta credit_limit_tool.
 ### 3.2 Aumentar o limite
 O Agente, quando solicitado por aumento de crédito, ele utiliza a ferramenta credit_raise_tool para verificar se o Score do cliente é suficiente para o aumento de crédito, cria o pedido (registrando no banco de dados solicitacoes_aumento_limite.csv) e automaticamente aumenta o limite de crédito do cliente na base de dados clientes.csv. 
-Caso o cliente não possua Score suficiente, ele registra o pedido no banco de dados como rejeitado, pergunta se o mesmo gostaria de realizar uma Entrevista de Credito, em caso positivo redireciona o cliente para o Agente de Entrevista de Crédito.
+Caso o cliente não possua Score suficiente, ele registra o pedido no banco de dados como rejeitado, pergunta se o mesmo gostaria de realizar uma entrevista de credito, em caso positivo redireciona o cliente para o Agente de Entrevista de Crédito.
 ### 3.3 Agente de entrevista de Crédito
 O Agente é responsável por realizar uma entrevista, que são perguntas sequenciais, armazenar em memória e usar a ferramenta calcular_score_tool com esses parâmetros. Uma vez que recebe o resultado, informa ao cliente e atualiza o Score do mesmo usando a ferramenta atualizar_score_cliente_tool e em seguida redireciona para o Agente de crédito que oferece realizar a consulta de aumento de limite novamente.
 
@@ -82,11 +82,11 @@ Durante todo o processo, o cliente pode solicitar encerrar a sessão, sendo aten
 
 
 # Desafios enfrentados e como foram resolvidos.
-A escolha do ADK foi adequada, mas existiu uma curva de aprendizado inicial que foi facilitada pelo conhecimento de desenvolvimento de software e da linguagem escolhida. 
-No entanto, o ADK é um desenvolvimento relativamente novo, possuindo alterações no código rápidas que impactam nos métodos implementados nas biblitecas fornecidas. Comecei a implementar o agente de entrevista tentando usar um "Workflow Agent", no entanto este não era mais existente na última versão da biblioteca, o que me levou a usar um agente Lllm com regras de contexto por prompt. 
+A escolha do ADK foi adequada, mas exigiu uma curva de aprendizado inicial que foi facilitada pelo conhecimento de desenvolvimento de software e da linguagem escolhida. 
+O ADK é um desenvolvimento relativamente novo, possuindo alterações no código rápidas que impactam nos métodos implementados e nas biblitecas fornecidas. Comecei a implementar o agente de entrevista tentando usar um "Workflow Agent", no entanto este não era mais existente na última versão da biblioteca, o que me levou a usar um agente Lllm com regras de contexto por prompt. 
 
-Comecei a reutilizar um código anterior para servir de interface, conforme solicitado nos requerimentos do exercício. No entanto, o acesso local ao Google ADK não funcionava de jeito nenhum. Passei um tempo estudando o código, olhando bloquadores do browser, e até firewall da maquina local. Após pesquisa, entendi que o erro de negação do recurso estava no próprio ADK que proíbe requisições com origem "null" pela política CORS. A razão é que coloquei o Javascript em um HTML comum aberto pelo browser, portanto ele não tinha o Origin. 
-A solução para testes iniciar o ADK com a opção "--allow_origins "*" ". 
+Comecei a adaptar um código anterior para servir de interface, conforme solicitado nos requerimentos do exercício. No entanto, o acesso http local ao Google ADK não funcionava conforme esperado. Passei um tempo estudando o código, olhando bloquadores do browser, e até firewall da maquina local. Após pesquisa, entendi que o erro de negação do recurso estava no próprio ADK que proíbe requisições com origem "null" pela política CORS. A razão é que coloquei o Javascript em um HTML comum aberto pelo browser, portanto ele não tinha o Origin. 
+A solução para testes foi iniciar o ADK com a opção "--allow_origins "*" ". 
 
 
 # Tutorial de execução e testes.
@@ -137,4 +137,8 @@ adk web --port 8000 --allow_origins "*"
 
 Se acessar http://127.0.0.1:8000 , acessará a interface de desenvolvimento do agente, podendo visualizar as interações e demais informações do agente.
 Para um teste simples, simplesmente abra o banco_agil/chat.html e utilize o chat.
+
+
+
+
 
