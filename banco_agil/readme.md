@@ -39,10 +39,10 @@ A arquitetura desenvolvida contempla agentes Coordenados usando o ADK (Agent Dev
 
 
 <p align="center">
-  <img src="banco_agil/public/arquitetura_agentes.png" width="250">
+  <img src="public/arquitetura_agentes.png" width="250">
 </p>
 
-![Arquitetura geral](banco_agil/public/arquitetura_agentes.png)
+![Arquitetura geral](public/arquitetura_agentes.png)
 
 ## Escolhas técnicas
 
