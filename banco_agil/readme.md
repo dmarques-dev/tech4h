@@ -37,11 +37,6 @@ Escolhida por ser de natureza alto nível (acelerando o desenvolvimento), ser um
 ## Arquitetura
 A arquitetura desenvolvida contempla agentes Coordenados usando o ADK (Agent Development Kit) do Google, com um Agente de Triagem (Root Agent) que roteia a conversa para um Agente de Câmbio, um Agente de Crédito e um Agente de entrevistas. 
 
-
-<p align="center">
-  <img src="public/arquitetura_agentes.png" width="250">
-</p>
-
 ![Arquitetura geral](public/arquitetura_agentes.png)
 
 ## Escolhas técnicas
@@ -101,14 +96,16 @@ Para executar os testes, a recomendação é utilizar a máquina local para roda
 ## Pre-requisitos
 
 ### Python 3.10 ou mais atual
-### pip para instalar pacotes
+### pip para instalar pacotes 
+Caso não tenha o pip instalado, refira-se a esta documentação:
+https://pip.pypa.io/en/stable/installation/
 
 
 ## Instalação do Google ADK
 
 Crie e ative o Python Virtual Environment (Recomendado)
 
-Entre no diretório onde a pasta banco_agil se encontra (não dentro dela) e execute:
+Para isto, entre no diretório onde a pasta banco_agil se encontra (não dentro dela) e execute:
 
 ```
 python -m venv .venv
@@ -129,7 +126,7 @@ Agora instale o ADK:
 pip install google-adk
 ```
 
-Dentro do diretório "banco_agil" copie o arquivo .env-examplo para .env
+Dentro do diretório "banco_agil" copie o arquivo .env-example para .env
 Edite a variável GOOGLE_API_KEY com uma chave API do google válida. Caso não tenha, obtenha uma conforme explicado aqui:
 
 
