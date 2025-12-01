@@ -169,7 +169,10 @@ def solicitar_aumento_limite(tool_context: ToolContext, novo_limite: float) -> d
                     continue  # Se houver erro, pula para proxima linha
             
             if limite_permitido is None:
-                return {"status": "error", "mensagem": "Não foi possível determinar o limite permitido para o score do cliente."}
+                return {
+                    "status": "error",
+                    "mensagem": f"Não foi possível determinar o limite permitido para o score do cliente. Erro ao processar solicitação: {str(e)}"
+                }
             
             # Verificar se o novo limite solicitado excede o permitido
             if novo_limite > limite_permitido:

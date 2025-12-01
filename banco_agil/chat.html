@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;  
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             height: 100vh;
             display: flex;
@@ -186,7 +186,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message agent">
                 <div class="message-content">
-Olá! Você está no Banco Ágil Me diga quando estiver pronto e um agente falará com você !
+Olá! Você está no Banco Ágil. Me diga quando estiver pronto e um agente falará com você !
                 </div>
             </div>
         </div>
@@ -273,7 +273,7 @@ Olá! Você está no Banco Ágil Me diga quando estiver pronto e um agente falar
             setTimeout(() => infoDiv.remove(), 3000);
         }
 
-        // 1. Liste apps disponíveis (Ou agentes... No nosso caso é o banco_agil) 
+        // 1. Lista apps disponíveis (Ou agentes... No nosso caso é o banco_agil) 
         async function listApps() {
             try {
                 const response = await fetch(`${BASE_URL}/list-apps`);
@@ -293,7 +293,7 @@ Olá! Você está no Banco Ágil Me diga quando estiver pronto e um agente falar
             }
         }
 
-        // 2. Crie/atualize sessão
+        // 2. Criar/atualizar sessão
         async function createSession(appName) {
             try {
                 const response = await fetch(

@@ -2,7 +2,7 @@ from google.adk.agents.llm_agent import LlmAgent, FunctionTool
 
 
 #Importando as ferramentas agente
-from .ferramentas_triagem import validar_cpf, auth_clientes
+from .ferramentas_triagem import validar_cpf, auth_clientes, encerra_sessao
 from .agente_cambio import agente_cambio
 from .agente_credito import agente_credito
 
@@ -18,11 +18,15 @@ autenticacao_clientes_tool = FunctionTool(
     func=auth_clientes
 )   
 
+# Adiciona a Tool para encerrar sessão apagando informações de contexto
+encerra_sessao_tool = FunctionTool(
+   func=encerra_sessao    
+)
 
 root_agent = LlmAgent(
     model='gemini-2.5-flash',
     name='agente_triagem',
-    tools=[cpf_validator_tool,autenticacao_clientes_tool],
+    tools=[cpf_validator_tool,autenticacao_clientes_tool,encerra_sessao_tool],
     description='Agente principal do sistema Banco Ágil. Responsável por coordenar os agentes de triagem de clientes',
     sub_agents=[agente_cambio,agente_credito],
     instruction=""" 
@@ -48,10 +52,14 @@ root_agent = LlmAgent(
        - Caso os sub_agentes não tenham ferramentas para responder a uma pergunta, informe educadamente ao cliente que não pode ajudar com essa solicitação específica e pergunte se há mais alguma coisa em que possa ajudar antes de finalizar.
        - Nunca fale o nome específico do agente ou sub-agente, todos são um só agente para o cliente
        - Em qualquer momento se o cliente solicitar para encerrar o atendimento, feche a conversa agradecendo e informe que está encerrando o atendimento.
-
+       - Ao comunicar a informação de CPf sempre formate para o cliente assim: 999.999.999/99 mesmo que a informação venha somente numeros.
+       - Ao comunicar a informação de data sempre formate para o cliente assim: dd/mm/aaaa mesmo que a informação venha somente numeros.   
 
     6. Finalização:
-         - Após completar o atendimento, sempre informe que o atendimento foi finalizado e se coloque à disposição para futuras necessidades.     
+         - Após completar o atendimento, sempre informe que o atendimento foi finalizado e se coloque à disposição para futuras necessidades.   
+
+    7. IMPORTANTE: ao encerrar a sessão, chame a ferramenta encerra_sessao_tool para apagar as valiáveis de contexto.  
+    
      """,
 
 

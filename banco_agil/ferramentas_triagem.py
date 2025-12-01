@@ -36,6 +36,13 @@ def validar_cpf(cpf: str) -> bool:
 
     return True
 
+def encerra_sessao(tool_context: ToolContext = None) -> dict:
+
+    if tool_context:
+        tool_context.state["user_cpf"] = ""
+        tool_context.state["user_limite_credito"] = ""
+        tool_context.state["user_score_atual"] = ""
+        return {"status": "success", "mensagem": "Informações de contexto apagadas. Encerrando sessão"}
 
     
 

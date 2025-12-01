@@ -136,7 +136,7 @@ adk web --port 8000 --allow_origins "*"
 ```
 
 Se acessar http://127.0.0.1:8000 , acessará a interface de desenvolvimento do agente, podendo visualizar as interações e demais informações do agente.
-Para um teste simples, simplesmente abra o banco_agil/chat.html e utilize o chat.
+Uma interface simples foi adaptada para simular um ambiente de chat com atendente virtual, abra o html banco_agil/chat.html no seu browser e utilize o chat para conversar com o agente.
 
 
 
