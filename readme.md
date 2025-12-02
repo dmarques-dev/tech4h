@@ -21,7 +21,7 @@ banco_agil/
 |---ferramentas_cambio.py   #Ferramentas (funções em python) do agente de câmbio
 |---agente_credito.py   #Agente de crédito - Responsável por informar limites do cliente e processar solicitações de aumento de limite
 |---ferramentas_credito.py   #Ferramentas (funções em python) do agente de crédito
-|---agemte_entrevista.py   #Agente de entrevista - Responsável por conduzir uma entrevista financeira para atualizar o score de crédito
+|---agente_entrevista.py   #Agente de entrevista - Responsável por conduzir uma entrevista financeira para atualizar o score de crédito
 |---chat.html # Um HTML simples com um javascript que simula a interface web de um chat. (Pode-se fazer o trace na interface direta do Google ADK nativo)
 
 ```
